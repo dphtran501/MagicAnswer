@@ -6,12 +6,16 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 /**
- * Created by Jeannie on 10/31/2017.
+ * A class that listens for accelerometer changes.
+ *
+ * @author Derek Tran
+ * @version 1.0
+ * @since October 31, 2017
  */
 
 public class ShakeDetector implements SensorEventListener
 {
-    private static final long ELAPSED_TIME= 1000;
+    private static final long ELAPSED_TIME = 1000;
     // Accelerometer data uses float
     private static final float THRESHOLD = 20;
 
@@ -19,11 +23,21 @@ public class ShakeDetector implements SensorEventListener
 
     private OnShakeListener mListener;
 
+    /**
+     * Creates a new instance of a ShakeDetector, using a specified OnShakeListener.
+     *
+     * @param listener The listener that listens for a device shake (accelerometer change).
+     */
     public ShakeDetector(OnShakeListener listener)
     {
         mListener = listener;
     }
 
+    /**
+     * Called when there is a new sensor event.
+     *
+     * @param sensorEvent The sensor event that changed.
+     */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent)
     {
@@ -56,6 +70,13 @@ public class ShakeDetector implements SensorEventListener
         }
     }
 
+    /**
+     * Called when the accuracy of the registered sensor has changed. Unlike onSensorChanged(), this
+     * is only called when this accuracy value changes.
+     *
+     * @param sensor The Sensor whose accuracy changed.
+     * @param i      The new accuracy of this sensor, one of <code>SensorManager.SENSOR_STATUS_*</code>
+     */
     @Override
     public void onAccuracyChanged(Sensor sensor, int i)
     {
@@ -66,6 +87,9 @@ public class ShakeDetector implements SensorEventListener
     // Interface = contract (method declarations WITHOUT implementation)
     // Some other class has to implement the method
 
+    /**
+     * Used for actions to take when a true shake occurs.
+     */
     public interface OnShakeListener
     {
         void onShake();
