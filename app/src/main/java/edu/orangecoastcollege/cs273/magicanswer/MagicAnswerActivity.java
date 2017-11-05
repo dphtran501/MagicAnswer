@@ -5,12 +5,24 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+/**
+ * This activity allows the user to enter a question into the EditText. When the device is "shaked"
+ * according to <code>ShakeDetector</code>, a random answer will be displayed below the question.
+ *
+ * @author Derek Tran
+ * @version 1.0
+ * @since October 31, 2017
+ */
 public class MagicAnswerActivity extends AppCompatActivity
 {
 
-    MagicAnswer magicAnswer;
+    private MagicAnswer magicAnswer;
+    private EditText questionEditText;
     private TextView answerTextView;
 
     private SensorManager mSensorManager;
@@ -18,6 +30,13 @@ public class MagicAnswerActivity extends AppCompatActivity
     // Create a reference to our ShakeDetector
     private ShakeDetector mShakeDetector;
 
+    /**
+     * Initializes <code>MagicAnswerActivity</code> by inflating its UI.
+     *
+     * @param savedInstanceState Bundle containing the data it recently supplied in
+     *                           onSaveInstanceState(Bundle) if activity was reinitialized after
+     *                           being previously shut down. Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -25,6 +44,7 @@ public class MagicAnswerActivity extends AppCompatActivity
         setContentView(R.layout.activity_magic_answer);
 
         // TASK 1: SET THE REFERENCES TO THE LAYOUT ELEMENTS
+        questionEditText = (EditText) findViewById(R.id.questionEditText);
         answerTextView = (TextView) findViewById(R.id.answerTextView);
 
         // TASK 2: CREATE A NEW MAGIC ANSWER OBJECT
@@ -39,18 +59,26 @@ public class MagicAnswerActivity extends AppCompatActivity
             @Override
             public void onShake()
             {
-                displayMagicAnswer();
+                if (!TextUtils.isEmpty(questionEditText.getText().toString())) displayMagicAnswer();
+                else
+                    Toast.makeText(MagicAnswerActivity.this, "You must enter a question!", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    /**
+     * Displays a random answer to the screen.
+     */
     public void displayMagicAnswer()
     {
         String randomAnswer = magicAnswer.getRandomAnswer();
         answerTextView.setText(randomAnswer);
     }
 
+    /**
+     * Registers the ShakeDetector for the accelerometer at a rate suitable for the UI.
+     */
     protected void onResume()
     {
         super.onResume();
