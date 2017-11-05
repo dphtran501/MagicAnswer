@@ -61,7 +61,7 @@ public class MagicAnswerActivity extends AppCompatActivity
             {
                 if (!TextUtils.isEmpty(questionEditText.getText().toString())) displayMagicAnswer();
                 else
-                    Toast.makeText(MagicAnswerActivity.this, "You must enter a question!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MagicAnswerActivity.this, "You must ask a question!", Toast.LENGTH_SHORT).show();
             }
         });
 
